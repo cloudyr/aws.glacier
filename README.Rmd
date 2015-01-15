@@ -1,0 +1,27 @@
+# AWS Glacier Client Package #
+
+**aws.glacier** is a simple client package for the Amazon Web Services (AWS) Glacier API.
+
+## Installation ##
+
+[![Build Status](https://travis-ci.org/cloudyr/aws.glacier.png?branch=master)](https://travis-ci.org/cloudyr/aws.glacier)
+
+To install the latest development version from GitHub, run the following:
+
+```R
+if(!require("devtools")){
+    install.packages("devtools")
+    library("devtools")
+}
+install_github("cloudyr/aws.glacier")
+```
+
+To install the latest version from CRAN, simply use `install.packages("aws.glacier")`.
+```
+
+## Code Examples ##
+
+Coming soon...using examples from the "mturk" bucket
+
+---
+[![cloudyr project logo](http://i.imgur.com/JHS98Y7.png)](https://github.com/cloudyr)
