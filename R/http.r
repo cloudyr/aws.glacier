@@ -1,5 +1,4 @@
 .treehash <- function(body) {
-
 }
 
 glacierHTTP <- function(verb, action, query = list(), headers = list(), body = "", 

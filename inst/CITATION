@@ -1,8 +1,6 @@
 citHeader("To cite package 'aws.glacier' in publications use:")
-     
  year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
  vers <- paste("R package version", meta$Version)
- 
  citEntry(entry="Manual",
 		  title = "aws.glacier: AWS Glacier Client Package",
 		  author = personList(as.person("Thomas J. Leeper")),
