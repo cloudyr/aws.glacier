@@ -7,17 +7,15 @@ r_github_packages:
 - jimhester/covr
 - eddelbuettel/drat
 after_failure:
-  email: 
+  email:
     recipients:
-     - thosjleeper@gmail.com
+    - thosjleeper@gmail.com
     on_success: change
     on_failure: change
 after_success:
 - Rscript -e 'library("covr");codecov()'
-#- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash knitreadme.sh
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash drat.sh
+- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
+  drat.sh
 env:
   global:
-  - secure: NkoBLN7g9Jjkn1kXfjFbiTmCRXgEFWAeRObLyiJZCA9FzeAN6pARvuV45Jkt8T3pRzma7MbOg1wN/FG7ywAXYYMeijIDUy5VxNZWxbmTOHVOeVBVW+H8qlrGxHF/KXHKKAcjnOnO2Z/rHrvBmXOJQbEXXUwPAlr7RNNxwasrFAY=
-  - secure: XT+piKb0x5Tt4Zac/h7K7IuO3/RtH+KatM7GjNKxUuMjCU8BMKon95e5AG3kCUfnKoEbeuPaV+zx2FwJXP72tVHmEfvVuxnPPH5rPQkEWfAd+THeTnVEqfi+64v4d/oDqY1nbdZ7H8PZNiRnMuWigsLjlmwkitXOpzNL2JPivZk=
-  - secure: g0Gsff+BDSMHFDfLvB+r5vOxgaLWjQBy7eMMJoMdrU+40nXuOaHCHmjL67BYuTjWjfHvnCq01n+rZjIRjJbiSCzlELx0bw7hW0JteAqFrU3UVYwgEnJb7ulBEWuVjL0e/tJItSCwGo1S+ighMXQlM1fCKBTCX5QPV1ROonSla2Y=
+    secure: Z86nZLaP8+9+9Lk/N7bJVYaSrzoytqCtTqZpBW+4+kF+YuNVY6fwFQk4g3EgZodIc8SZMnM6+xDOzg/4x/vRqusj0DYjGzTAMqvZHCm2+63M9w87md4CtdZzZNpkRgsV89Ge9SihLnRVGaC42TQfNBwZPjIsWNA2nEvABgkNxLc=
