@@ -1,11 +1,13 @@
 # simple upload
 
+#' @export
 upload_archive <- function(vault, contents, ...) {
     action <- paste0("/-/vaults/", vault, "/archives")
     r <- glacierHTTP("POST", action = action, body = contents, ...)
     return(r)
 }
 
+#' @export
 delete_archive <- function(vault, archive, ...) {
     action <- paste0("/-/vaults/", vault, "/archives/", archive)
     r <- glacierHTTP("DELETE", action = action, ...)
@@ -18,6 +20,7 @@ delete_archive <- function(vault, archive, ...) {
 
 initiate_upload <- function() {}
 
+#' @export
 abort_upload <- function(vault, id, ...) {
     action <- paste0("/-/vaults/", vault, "/multipart-uploads/", id)
     r <- glacierHTTP("DELETE", action = action, ...)
@@ -27,6 +30,7 @@ abort_upload <- function(vault, id, ...) {
 complete_upload <- function(vault, id, ...) {
 }
 
+#' @export
 list_uploads <- function(vault, ...) {
     action <- paste0("/-/vaults/", vault, "/multipart-uploads/")
     r <- glacierHTTP("GET", action = action, ...)
@@ -36,6 +40,7 @@ list_uploads <- function(vault, ...) {
 
 upload_part <- function() {}
 
+#' @export
 list_parts <- function(vault, id, ...) {
     action <- paste0("/-/vaults/", vault, "/multipart-uploads/", id)
     r <- glacierHTTP("GET", action = action, ...)
