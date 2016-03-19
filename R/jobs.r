@@ -1,3 +1,6 @@
+#' @title Initiate job
+#' @description Initiate a Glacier job
+#' @template dots
 #' @export
 initiate_job <- 
 function(description,
@@ -64,6 +67,13 @@ function(description,
     return(r)
 }
 
+#' @rdname get_job
+#' @title Get job
+#' @description Get job or job output
+#' @template vault
+#' @template job
+#' @template dots
+#' @return A list.
 #' @export
 get_job <- function(vault, job, ...) {
     r <- glacierHTTP("GET", paste0("/-/vaults/",vault,"/jobs/", job), ...)
@@ -76,6 +86,9 @@ get_job_output <- function(vault, job, ...) {
     return(r)
 }
 
+#' @title List jobs
+#' @description List jobs
+#' @template dots
 #' @export
 list_jobs <- function(vault, n, completed, marker, status, ...) {
     query <- list()

@@ -1,9 +1,17 @@
+#' @rdname retrieval_policies
+#' @title Retrieval policies
+#' @description Get and set retrieval policies
+#' @param strategy
+#' @param bytes
+#' @template dots
+#' @return A list.
 #' @export
 get_retrieval_policy <- function(...) {
     r <- glacierHTTP("GET", "/-/policies/data-retrieval", ...)
     return(r)
 }
 
+#' @rdname retrieval_policies
 #' @export
 set_retrieval_policy <- function(strategy, bytes, ...) {
     # parse body to JSON

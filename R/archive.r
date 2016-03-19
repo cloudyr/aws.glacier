@@ -1,5 +1,12 @@
 # simple upload
 
+#' @rdname archives
+#' @title Archives
+#' @description Upload or delete Archives
+#' @template vault
+#' @param contents 
+#' @param archive
+#' @template dots
 #' @export
 upload_archive <- function(vault, contents, ...) {
     action <- paste0("/-/vaults/", vault, "/archives")
@@ -7,6 +14,7 @@ upload_archive <- function(vault, contents, ...) {
     return(r)
 }
 
+#' @rdname archives
 #' @export
 delete_archive <- function(vault, archive, ...) {
     action <- paste0("/-/vaults/", vault, "/archives/", archive)

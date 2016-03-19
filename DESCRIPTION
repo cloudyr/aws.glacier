@@ -1,8 +1,8 @@
 Package: aws.glacier
 Type: Package
 Title: AWS Glacier Client Package
-Version: 0.1.2
-Date: 2016-03-18
+Version: 0.1.3
+Date: 2016-03-19
 Author: Thomas J. Leeper
 Maintainer: Thomas J. Leeper <thosjleeper@gmail.com>
 Description: A simple client package for the Amazon Web Services (AWS) Glacier
