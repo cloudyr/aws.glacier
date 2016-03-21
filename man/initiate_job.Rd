@@ -4,10 +4,12 @@
 \alias{initiate_job}
 \title{Initiate job}
 \usage{
-initiate_job(description, type, archive, format, limit, marker, bytes, start,
-  end, topic, ...)
+initiate_job(vault, description, type, archive, format, limit, marker, bytes,
+  start, end, topic, ...)
 }
 \arguments{
+\item{vault}{A character string specifying the name of an AWS Glacier vault (max. 255 characters).}
+
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }
 \description{

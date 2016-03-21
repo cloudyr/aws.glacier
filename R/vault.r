@@ -43,7 +43,6 @@ list_vaults <- function(n, ...) {
 #' @param events
 #' @param sns_topic A character string specifying an SNS topic name or ARN.
 #' @template dots
-#' @template dots
 #' @export
 get_vault_notification <- function(vault, ...) {
     r <- glacierHTTP("GET", paste0("/-/vaults/", vault, "/notification-configuration"), ...)
@@ -51,6 +50,7 @@ get_vault_notification <- function(vault, ...) {
 }
 
 #' @rdname notifications
+#' @importFrom jsonlite toJSON
 #' @export
 set_vault_notification <- function(vault, events, sns_topic, ...) {
     b <- list()

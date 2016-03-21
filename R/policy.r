@@ -12,6 +12,7 @@ get_retrieval_policy <- function(...) {
 }
 
 #' @rdname retrieval_policies
+#' @importFrom jsonlite toJSON
 #' @export
 set_retrieval_policy <- function(strategy, bytes, ...) {
     # parse body to JSON

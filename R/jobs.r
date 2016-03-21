@@ -1,9 +1,11 @@
 #' @title Initiate job
 #' @description Initiate a Glacier job
+#' @template vault
 #' @template dots
 #' @export
 initiate_job <- 
-function(description,
+function(vault, 
+         description,
          type,
          archive, 
          format,
@@ -14,7 +16,7 @@ function(description,
          topic,
          ...) {
     b <- list()
-    vtypes <- c("archive-retrieval","inventory-retrieval")
+    vtypes <- c("archive-retrieval", "inventory-retrieval")
     if (!type %in% vtypes) {
         stop("'type' must be one of: ", paste0(vtypes, collapse = ", "))
     }
@@ -58,7 +60,6 @@ function(description,
         # need to format correctly
         query$EndTime <- end
     }
-
     
     if (!missing(topic)) {
         b$SNStopic <- topic
@@ -105,9 +106,10 @@ list_jobs <- function(vault, n, completed, marker, status, ...) {
     }
     if (!missing(status)) {
         vstat <- c("InProgress", "Succeeded", "Failed")
-        if(!status %in% vstat)
+        if (!status %in% vstat) {
             stop("'status' must be one of: ", paste0(vstat, collapse = ", "))
-        query$statuscode <- statuscode
+        }
+        query$statuscode <- status
     }
     r <- glacierHTTP("GET", paste0("/-/vaults/",vault,"/jobs"), query = query, ...)
     return(r)

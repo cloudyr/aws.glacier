@@ -18,8 +18,6 @@ delete_vault_notification(vault, ...)
 \item{sns_topic}{A character string specifying an SNS topic name or ARN.}
 
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
-
-\item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }
 \description{
 Get, set, and delete vault notifications
