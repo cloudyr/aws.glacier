@@ -4,9 +4,19 @@
 \alias{list_jobs}
 \title{List jobs}
 \usage{
-list_jobs(vault, n, completed, marker, status, ...)
+list_jobs(vault, n = 1000L, completed, marker, status, ...)
 }
 \arguments{
+\item{vault}{A character string specifying the name of an AWS Glacier vault (max. 255 characters).}
+
+\item{n}{An integer specifying the number of jobs to return. The default (and maximum) is 1000.}
+
+\item{completed}{Optionally, a logical specifying whether to return only jobs that are completed (\code{TRUE}) or not (\code{FALSE}).}
+
+\item{marker}{A character string specifying a marker used to paginate the request.}
+
+\item{status}{Optionally, a character string specifying the completion status of the jobs to return. If specified, must be one of: \dQuote{InProgress}, \dQuote{Succeeded}, or \dQuote{Failed}.}
+
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }
 \description{

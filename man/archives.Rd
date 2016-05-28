@@ -12,7 +12,9 @@ delete_archive(vault, archive, ...)
 \arguments{
 \item{vault}{A character string specifying the name of an AWS Glacier vault (max. 255 characters).}
 
-\item{contents}{}
+\item{contents}{This is the body to be uploaded, possibly the return value of \code{\link[httr]{upload_file}}.}
+
+\item{archive}{An AWS Glacier archive ID, possibly returned by \code{\link{upload_archive}}.}
 
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }

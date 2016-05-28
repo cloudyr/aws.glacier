@@ -2,9 +2,12 @@
 % Please edit documentation in R/jobs.R
 \name{get_job}
 \alias{get_job}
+\alias{get_job_output}
 \title{Get job}
 \usage{
 get_job(vault, job, ...)
+
+get_job_output(vault, job, ...)
 }
 \arguments{
 \item{vault}{A character string specifying the name of an AWS Glacier vault (max. 255 characters).}

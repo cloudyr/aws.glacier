@@ -4,8 +4,8 @@
 #' @title Archives
 #' @description Upload or delete Archives
 #' @template vault
-#' @param contents 
-#' @param archive
+#' @param contents This is the body to be uploaded, possibly the return value of \code{\link[httr]{upload_file}}.
+#' @template archive 
 #' @template dots
 #' @export
 upload_archive <- function(vault, contents, ...) {

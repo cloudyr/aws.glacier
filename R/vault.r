@@ -28,10 +28,19 @@ describe_vault <- function(vault, ...) {
 
 #' @title list_vaults
 #' @description List vaults
-#' @param n
+#' @param n An integer specifying the number of vaults to return. The default (and maximum) is 1000.
+#' @template marker
 #' @template dots
 #' @export
-list_vaults <- function(n, ...) {
+list_vaults <- function(n = 1000L, marker, ...) {
+    query <- list()
+    if (!n %in% 1:1000) {
+        stop("'n' must be between 1 and 1000")
+    }
+    query$limit <- n
+    if (!missing(marker)) {
+        query$marker <- marker
+    }
     r <- glacierHTTP("GET", "/-/vaults", ...)
     return(r)
 }
@@ -40,8 +49,8 @@ list_vaults <- function(n, ...) {
 #' @title Vault notifications
 #' @description Get, set, and delete vault notifications
 #' @template vault
-#' @param events
-#' @param sns_topic A character string specifying an SNS topic name or ARN.
+#' @param events A character vector of events that will trigger notifications to the AWS SNS topic. Valid values are: \dQuote{ArchiveRetrievalCompleted} and \dQuote{InventoryRetrievalCompleted}.
+#' @template topic
 #' @template dots
 #' @export
 get_vault_notification <- function(vault, ...) {
@@ -52,14 +61,14 @@ get_vault_notification <- function(vault, ...) {
 #' @rdname notifications
 #' @importFrom jsonlite toJSON
 #' @export
-set_vault_notification <- function(vault, events, sns_topic, ...) {
+set_vault_notification <- function(vault, events, topic, ...) {
     b <- list()
     vevents <- c("ArchiveRetrievalCompleted", "InventoryRetrievalCompleted")
     if (any(!events %in% vevents)) {
         stop("'events' must be in: ", paste0(vevents, collapse = ", "))
     }
     b$Events <- events
-    b$SNSTopic <- sns_topic
+    b$SNSTopic <- topic
     b <- toJSON(b)
     r <- glacierHTTP("PUT", paste0("/-/vaults/", vault, "/notification-configuration"), 
                      body = b, ...)

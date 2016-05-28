@@ -8,14 +8,16 @@
 \usage{
 get_vault_notification(vault, ...)
 
-set_vault_notification(vault, events, sns_topic, ...)
+set_vault_notification(vault, events, topic, ...)
 
 delete_vault_notification(vault, ...)
 }
 \arguments{
 \item{vault}{A character string specifying the name of an AWS Glacier vault (max. 255 characters).}
 
-\item{sns_topic}{A character string specifying an SNS topic name or ARN.}
+\item{events}{A character vector of events that will trigger notifications to the AWS SNS topic. Valid values are: \dQuote{ArchiveRetrievalCompleted} and \dQuote{InventoryRetrievalCompleted}.}
+
+\item{topic}{A character string specifying an SNS topic name or ARN.}
 
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }

@@ -10,6 +10,26 @@ initiate_job(vault, description, type, archive, format, limit, marker, bytes,
 \arguments{
 \item{vault}{A character string specifying the name of an AWS Glacier vault (max. 255 characters).}
 
+\item{description}{Optionally, a character string specifying a description of the job.}
+
+\item{type}{A character string specifying the job type. Must be either \dQuote{archive-retrieval} or \dQuote{inventory-retrieval}.}
+
+\item{archive}{When \code{type = "archive-retrieval"}, an AWS Glacier archive ID, possibly returned by \code{\link{upload_archive}}.}
+
+\item{format}{Optionally, a character string specifying the format of the job output. Must be one of either \dQuote{CSV} or \dQuote{JSON}.}
+
+\item{limit}{Optionally, an integer specifying the maximum number of inventory items returned per vault inventory retrieval request.}
+
+\item{marker}{A character string specifying a marker used to paginate the request.}
+
+\item{bytes}{Optionally, either a character string containing a hyphenated byte range to retrieve (e.g., \code{"1-10"}). This can also be specified as a two-element integer vector specifying the start and end of the range.}
+
+\item{start}{Optionally, an character string containing an ISO 8601 datetime specifying the start of the date range for vault inventory retrieval that includes archives created after this date.}
+
+\item{end}{Optionally, an character string containing an ISO 8601 datetime specifying the end of the date range for vault inventory retrieval that includes archives created before this date.}
+
+\item{topic}{A character string specifying an SNS topic name or ARN.}
+
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }
 \description{

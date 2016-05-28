@@ -3,19 +3,23 @@
 \name{get_retrieval_policy}
 \alias{get_retrieval_policy}
 \alias{set_retrieval_policy}
-\title{Retrieval policies}
+\title{Data Retrieval policies}
 \usage{
 get_retrieval_policy(...)
 
 set_retrieval_policy(strategy, bytes, ...)
 }
 \arguments{
+\item{strategy}{A character string specifying the type of data retrieval policy to set. Must be one of: \dQuote{BytesPerHour}, \dQuote{FreeTier}, or \dQuote{None}.}
+
+\item{bytes}{If \code{strategy = "BytesPerHour"}, an integer specifying the maximum number of bytes that can be retrieved per hour (between 1 and \eqn{2^63-1}).}
+
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }
 \value{
 A list.
 }
 \description{
-Get and set retrieval policies
+Get and set data retrieval policies
 }
 

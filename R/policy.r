@@ -1,8 +1,8 @@
 #' @rdname retrieval_policies
-#' @title Retrieval policies
-#' @description Get and set retrieval policies
-#' @param strategy
-#' @param bytes
+#' @title Data Retrieval policies
+#' @description Get and set data retrieval policies
+#' @param strategy A character string specifying the type of data retrieval policy to set. Must be one of: \dQuote{BytesPerHour}, \dQuote{FreeTier}, or \dQuote{None}.
+#' @param bytes If \code{strategy = "BytesPerHour"}, an integer specifying the maximum number of bytes that can be retrieved per hour (between 1 and \eqn{2^63-1}).
 #' @template dots
 #' @return A list.
 #' @export
@@ -26,8 +26,9 @@ set_retrieval_policy <- function(strategy, bytes, ...) {
     b$Policy$Rules <- c("Strategy" = strategy)
     if (strategy == "BytesPerHour") {
         bytes <- as.integer(bytes)
-        if(bytes < 1 | bytes > (2^63-1))
+        if (bytes < 1 | bytes > (2^63-1)) {
             stop("'bytes' must be an integer between 1 and 2^63-1")
+        }
         b$Policy$Rules <- c(b$Policy$Rules$Strategy, "BytesPerHour" = bytes)
     }
     b <- toJSON(b)

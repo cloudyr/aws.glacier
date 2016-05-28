@@ -1,10 +1,10 @@
 Package: aws.glacier
 Type: Package
 Title: AWS Glacier Client Package
-Version: 0.1.4
-Date: 2016-03-21
-Author: Thomas J. Leeper
-Maintainer: Thomas J. Leeper <thosjleeper@gmail.com>
+Version: 0.1.5
+Date: 2016-05-28
+Authors@R: c(person("Thomas J.", "Leeper", role = c("aut", "cre"),
+                    email = "thosjleeper@gmail.com"))
 Description: A simple client package for the Amazon Web Services (AWS) Glacier
     API.
 License: GPL (>= 2)
@@ -14,7 +14,9 @@ Imports:
     jsonlite,
     aws.signature
 Suggests:
-    testthat
+    testthat,
+    aws.sns
 URL: https://github.com/cloudyr/aws.glacier
 BugReports: https://github.com/cloudyr/aws.glacier/issues
-RoxygenNote: 5.0.1.9000
+RoxygenNote: 5.0.1
+Additional_repositories: http://cloudyr.github.io/drat

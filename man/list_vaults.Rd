@@ -4,9 +4,13 @@
 \alias{list_vaults}
 \title{list_vaults}
 \usage{
-list_vaults(n, ...)
+list_vaults(n = 1000L, marker, ...)
 }
 \arguments{
+\item{n}{An integer specifying the number of vaults to return. The default (and maximum) is 1000.}
+
+\item{marker}{A character string specifying a marker used to paginate the request.}
+
 \item{\dots}{Additional arguments passed to \code{\link{glacierHTTP}}.}
 }
 \description{
