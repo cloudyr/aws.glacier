@@ -15,6 +15,7 @@ create_vault <- function(vault, ...) {
 #' @rdname vaults
 #' @export
 delete_vault <- function(vault, ...) {
+    vault <- get_vault_name(vault)
     r <- glacierHTTP("DELETE", paste0("/-/vaults/", vault), ...)
     return(r)
 }
@@ -22,8 +23,9 @@ delete_vault <- function(vault, ...) {
 #' @rdname vaults
 #' @export
 describe_vault <- function(vault, ...) {
+    vault <- get_vault_name(vault)
     r <- glacierHTTP("GET", paste0("/-/vaults/", vault), ...)
-    return(r)
+    return(structure(r, class = "aws_glacier_vault"))
 }
 
 #' @title list_vaults
@@ -42,7 +44,7 @@ list_vaults <- function(n = 1000L, marker, ...) {
         query$marker <- marker
     }
     r <- glacierHTTP("GET", "/-/vaults", ...)
-    return(r)
+    return(lapply(r$VaultList, `class<-`, "aws_glacier_vault"))
 }
 
 #' @rdname notifications
@@ -59,17 +61,19 @@ get_vault_notification <- function(vault, ...) {
 }
 
 #' @rdname notifications
-#' @importFrom jsonlite toJSON
 #' @export
-set_vault_notification <- function(vault, events, topic, ...) {
+set_vault_notification <- 
+function(
+  vault,
+  events = c("ArchiveRetrievalCompleted", "InventoryRetrievalCompleted"),
+  topic,
+  ...
+) {
+    vault <- get_vault_name(vault)
     b <- list()
-    vevents <- c("ArchiveRetrievalCompleted", "InventoryRetrievalCompleted")
-    if (any(!events %in% vevents)) {
-        stop("'events' must be in: ", paste0(vevents, collapse = ", "))
-    }
+    events <- match.arg(events)
     b$Events <- events
     b$SNSTopic <- topic
-    b <- toJSON(b)
     r <- glacierHTTP("PUT", paste0("/-/vaults/", vault, "/notification-configuration"), 
                      body = b, ...)
     return(r)
@@ -78,6 +82,7 @@ set_vault_notification <- function(vault, events, topic, ...) {
 #' @rdname notifications
 #' @export
 delete_vault_notification <- function(vault, ...) {
+    vault <- get_vault_name(vault)
     r <- glacierHTTP("DELETE", paste0("/-/vaults/", vault, "/notification-configuration"), ...)
     return(r)
 }

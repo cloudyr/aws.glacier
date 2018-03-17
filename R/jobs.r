@@ -13,7 +13,7 @@
 #' @template topic
 #' @template dots
 #' @export
-initiate_job <- 
+initiate_glacier_job <- 
 function(vault, 
          description,
          type,
@@ -25,6 +25,7 @@ function(vault,
          start, end,
          topic,
          ...) {
+    vault <- get_vault_name(vault)
     b <- list()
     vtypes <- c("archive-retrieval", "inventory-retrieval")
     if (!type %in% vtypes) {
@@ -90,14 +91,16 @@ function(vault,
 #' @template dots
 #' @return A list.
 #' @export
-get_job <- function(vault, job, ...) {
+get_glacier_job <- function(vault, job, ...) {
+    vault <- get_vault_name(vault)
     r <- glacierHTTP("GET", paste0("/-/vaults/",vault,"/jobs/", job), ...)
     return(r)
 }
 
 #' @rdname get_job
 #' @export
-get_job_output <- function(vault, job, ...) {
+get_glacier_job_output <- function(vault, job, ...) {
+    vault <- get_vault_name(vault)
     r <- glacierHTTP("GET", paste0("/-/vaults/",vault,"/jobs/", job, "/output"), ...)
     return(r)
 }
@@ -111,7 +114,8 @@ get_job_output <- function(vault, job, ...) {
 #' @param status Optionally, a character string specifying the completion status of the jobs to return. If specified, must be one of: \dQuote{InProgress}, \dQuote{Succeeded}, or \dQuote{Failed}.
 #' @template dots
 #' @export
-list_jobs <- function(vault, n = 1000L, completed, marker, status, ...) {
+list_glacier_jobs <- function(vault, n = 1000L, completed, marker, status, ...) {
+    vault <- get_vault_name(vault)
     query <- list()
     if (!missing(completed)) {
         query$completed <- completed

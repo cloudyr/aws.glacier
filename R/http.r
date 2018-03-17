@@ -17,10 +17,14 @@
 #' @return A list.
 #' @import httr
 #' @importFrom aws.signature signature_v4_auth
-#' @importFrom XML xmlToList xmlParse
+#' @importFrom jsonlite fromJSON
 #' @export
 glacierHTTP <- 
-function(verb, action, query = list(), headers = list(), body = "", 
+function(verb,
+         action,
+         query = list(),
+         headers = list(),
+         body = "", 
          region = Sys.getenv("AWS_DEFAULT_REGION", "us-east-1"), 
          key = NULL, 
          secret = NULL, 
@@ -36,6 +40,9 @@ function(verb, action, query = list(), headers = list(), body = "",
     headers$`x-amz-date` <- d_timestamp
     if (body != "") {
         headers$`x-amz-sha256-tree-hash` <- .treehash(body)
+    }
+    if (! "x-amz-glacier-version" %in% names(headers)) {
+        headers[["x-amz-glacier-version"]] <- "2012-06-01"
     }
     S <- signature_v4_auth(
            datetime = d_timestamp,
@@ -93,12 +100,12 @@ function(verb, action, query = list(), headers = list(), body = "",
     if (http_error(r)) {
         warn_for_status(r)
         h <- headers(r)
-        out <- structure(content(r, "text", encoding = "UTF-8"), headers = h, class = "aws_error")
+        out <- structure(jsonlite::fromJSON(content(r, "text", encoding = "UTF-8")), headers = h, class = "aws_error")
         attr(out, "request_canonical") <- S$CanonicalRequest
         attr(out, "request_string_to_sign") <- S$StringToSign
         attr(out, "request_signature") <- S$SignatureHeader
     } else {
-        out <- xmlToList(xmlParse(content(r, "text")))
+        out <- jsonlite::fromJSON(content(r, "text", encoding = "UTF-8"), simplifyDataFrame = FALSE)
     }
     return(out)
 }

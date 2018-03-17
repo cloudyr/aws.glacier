@@ -8,11 +8,10 @@
 #' @export
 get_retrieval_policy <- function(...) {
     r <- glacierHTTP("GET", "/-/policies/data-retrieval", ...)
-    return(r)
+    return(r$Policy)
 }
 
 #' @rdname retrieval_policies
-#' @importFrom jsonlite toJSON
 #' @export
 set_retrieval_policy <- function(strategy, bytes, ...) {
     # parse body to JSON
@@ -31,7 +30,14 @@ set_retrieval_policy <- function(strategy, bytes, ...) {
         }
         b$Policy$Rules <- c(b$Policy$Rules$Strategy, "BytesPerHour" = bytes)
     }
-    b <- toJSON(b)
     r <- glacierHTTP("PUT", "/-/policies/data-retrieval", body = b, ...)
     return(r)
 }
+
+#' @rdname retrieval_policies
+#' @xport
+get_glacier_capacity <- function(...) {
+    r <- glacierHTTP("GET", "/-/provisioned-capacity", ...)
+    return(r$Policy)
+}
+
