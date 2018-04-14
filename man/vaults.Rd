@@ -20,4 +20,3 @@ describe_vault(vault, ...)
 \description{
 Create, describe, or delete vaults
 }
-

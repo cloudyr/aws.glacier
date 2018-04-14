@@ -16,4 +16,3 @@ list_vaults(n = 1000L, marker, ...)
 \description{
 List vaults
 }
-

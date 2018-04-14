@@ -19,4 +19,4 @@ Suggests:
     aws.sns
 URL: https://github.com/cloudyr/aws.glacier
 BugReports: https://github.com/cloudyr/aws.glacier/issues
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

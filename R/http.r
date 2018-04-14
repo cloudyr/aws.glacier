@@ -9,10 +9,11 @@
 #' @param query A list of HTTP URL query parameters.
 #' @param headers A list of HTTP headers.
 #' @param body The body of the request.
-#' @param region A character string containing the AWS region. If missing, defaults to \dQuote{us-east-1}.
-#' @param key A character string containing an AWS Access Key ID. See \code{\link[aws.signature]{locate_credentials}}.
-#' @param secret A character string containing an AWS Secret Access Key. See \code{\link[aws.signature]{locate_credentials}}.
-#' @param session_token A character string containing an AWS Session Token. See \code{\link[aws.signature]{locate_credentials}}.
+#' @param verbose A logical indicating whether to be verbose. Default is given by \code{options("verbose")}.
+#' @param region A character string specifying an AWS region. See \code{\link[aws.signature]{locate_credentials}}.
+#' @param key A character string specifying an AWS Access Key. See \code{\link[aws.signature]{locate_credentials}}.
+#' @param secret A character string specifying an AWS Secret Key. See \code{\link[aws.signature]{locate_credentials}}.
+#' @param session_token Optionally, a character string specifying an AWS temporary Session Token to use in signing a request. See \code{\link[aws.signature]{locate_credentials}}.
 #' @param \dots Additional arguments passed to \code{\link[httr]{GET}}, etc.
 #' @return A list.
 #' @import httr
@@ -20,21 +21,31 @@
 #' @importFrom jsonlite fromJSON
 #' @export
 glacierHTTP <- 
-function(verb,
-         action,
-         query = list(),
-         headers = list(),
-         body = "", 
-         region = Sys.getenv("AWS_DEFAULT_REGION", "us-east-1"), 
-         key = NULL, 
-         secret = NULL, 
-         session_token = NULL,
-         ...) {
+function(
+  verb,
+  action,
+  query = list(),
+  headers = list(),
+  body = "", 
+  verbose = getOption("verbose", FALSE),
+  region = Sys.getenv("AWS_DEFAULT_REGION", "us-east-1"), 
+  key = NULL, 
+  secret = NULL, 
+  session_token = NULL,
+  ...
+) {
+    # locate and validate credentials
+    credentials <- locate_credentials(key = key, secret = secret, session_token = session_token, region = region, verbose = verbose)
+    key <- credentials[["key"]]
+    secret <- credentials[["secret"]]
+    session_token <- credentials[["session_token"]]
+    region <- credentials[["region"]]
+    
+    # generate request signature
     if (missing(verb)) {
         verb <- "GET"
     }
-    current <- Sys.time()
-    d_timestamp <- format(current, "%Y%m%dT%H%M%SZ", tz = "UTC")
+    d_timestamp <- format(Sys.time(), "%Y%m%dT%H%M%SZ", tz = "UTC")
     url <- paste0("https://glacier.", region, ".amazonaws.com", action)
     headers$host <- paste0("glacier.",region,".amazonaws.com")
     headers$`x-amz-date` <- d_timestamp
@@ -44,7 +55,7 @@ function(verb,
     if (! "x-amz-glacier-version" %in% names(headers)) {
         headers[["x-amz-glacier-version"]] <- "2012-06-01"
     }
-    S <- signature_v4_auth(
+    Sig <- signature_v4_auth(
            datetime = d_timestamp,
            region = region,
            service = "glacier",
@@ -55,13 +66,18 @@ function(verb,
            request_body = body,
            key = key, 
            secret = secret,
-           session_token)
-    headers$`x-amz-content-sha256` <- S$BodyHash
-    headers$Authorization <- S$SignatureHeader
+           session_token = session_token,
+           verbose = verbose)
+    # setup request headers
+    headers[["x-amz-date"]] <- d_timestamp
+    headers[["x-amz-content-sha256"]] <- Sig$BodyHash
+    headers[["Authorization"]] <- Sig[["SignatureHeader"]]
     if (!is.null(session_token) && session_token != "") {
         headers[["x-amz-security-token"]] <- session_token
     }
-    H <- do.call("add_headers", headers)
+    H <- do.call(add_headers, headers)
+    
+    # execute request
     if (verb == "GET") {
         if (length(query)) {
             r <- GET(url, H, query = query, ...)
@@ -101,9 +117,9 @@ function(verb,
         warn_for_status(r)
         h <- headers(r)
         out <- structure(jsonlite::fromJSON(content(r, "text", encoding = "UTF-8")), headers = h, class = "aws_error")
-        attr(out, "request_canonical") <- S$CanonicalRequest
-        attr(out, "request_string_to_sign") <- S$StringToSign
-        attr(out, "request_signature") <- S$SignatureHeader
+        attr(out, "request_canonical") <- Sig$CanonicalRequest
+        attr(out, "request_string_to_sign") <- Sig$StringToSign
+        attr(out, "request_signature") <- Sig$SignatureHeader
     } else {
         out <- jsonlite::fromJSON(content(r, "text", encoding = "UTF-8"), simplifyDataFrame = FALSE)
     }
